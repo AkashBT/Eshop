@@ -1,0 +1,191 @@
+{% extends 'store/base.html' %}
+
+{% block body %}
+
+{%load cart%}
+{% load custom_filter%}
+<style>
+    body {
+        color: white !important;
+    }
+
+    table {
+        color: white !important;
+    }
+
+    #example_filter {
+        float: right !important;
+    }
+
+    .pagination {
+        float: right !important;
+    }
+
+    td {
+        color: white !important;
+    }
+    #Discounrow{
+        display:none;
+    }
+</style>
+
+<div class="container">
+    <!-- <h1><u>My Cart</u></h1> -->
+
+
+    <div class="border rounded p-4 m-4" style="overflow-x: auto;">
+        <p class="display-4"><u><b>Your cart</b></u></p>
+        <table id="example" class="table table-striped table table-responsive" style="width:100%">
+            <thead>
+                <th>Sno.</th>
+                <th>Product Image</th>
+                <th>Product Name</th>
+                <th>Product Price</th>
+                <th>Product Quantity</th>
+                <th>Total Price</th>
+                <th>Coupons</th>
+                <th id="Discounrow">Price After Discount</th>
+            </thead>
+            <tbody>
+                {% for product in products%}
+
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img src="{{product.image.url}}" height="100px" width="100px" alt=""></td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.price|currency}}</td>
+                    <td>{{product|cart_quantity:request.session.cart}}</td>
+                    <td>{{product|price_total:request.session.cart|currency}}</td>
+
+                    <td>
+                    {% for coupon in coupons%}
+                    {%if product.name == coupon.product.name%}
+                    <button onclick="showdiscountrow()" id="PriceAfterDiscount" class="btn btn-success"> Apply Coupon({{coupon.couponname}})</button>
+
+                    {%else%}
+                    <h3 class="btn btn-danger disable" disable>No coupons to Apply</h3>
+                    {%endif%}
+                    {%endfor%}
+
+                </td>
+               
+                    {% for coupon in coupons%}
+                    {%if product.name == coupon.product.name%}
+                    <td >{{product|discount50:request.session.cart|currency}}</td>
+
+                    {%else%}
+                    <td id="Discounrow">{{product|price_total:request.session.cart|currency}}</td>
+                    {%endif%}
+                    {%endfor%}
+
+            
+
+                </tr>
+                {% endfor%}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="7"> Total</th>
+                    <th>{{products|total_cart_price:request.session.cart|currency}}</th>
+                </tr>
+            </tfoot>
+        </table>
+
+
+
+        <div class="m-3 p-3">
+            <a href="#" class="btn btn-secondary border rounded col-lg-3" data-bs-toggle="modal"
+                data-bs-target="#exampleModal" style="float:right">
+                Checkout
+            </a>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<script>
+    function showdiscountrow(){
+      document.getElementById('Discounrow').style.display = "block";
+    }
+    </script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-black" id="exampleModalLabel">Check Out Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="m-2 p-2">
+                    <form action="" method="POST" class="text-black">
+                        {%csrf_token%}
+                        <!-- <div class="form-group">
+                      <label for="address">Address</label>
+                      <input type="text" name="address" id="address" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" name="phone" id="phone" class="form-control">
+                </div>
+                <div class="form-group"> -->
+                        <!-- <input type="submit" onclick="myfunction()" id="mydiv" value="Check Out" class="btn btn-secondary btn-sm col-3 form-control mt-3 float-right"> -->
+                        <input type="submit" id="rzp-button1" value="Check Out"
+                            class="btn btn-secondary btn-sm col-3 form-control mt-3 float-right">
+                </div>
+                <script>
+                    function myFunction() {
+                        var x = document.getElementById("rzp-button1");
+                        if (x.style.display === "none") {
+                            x.style.display = "block";
+                        } else {
+                            x.style.display = "none";
+                        }
+                    }
+                </script>
+                </form>
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                <script>
+                    var new_amount = "{{products|total_cart_price:request.session.cart}}" * 100
+                    var options = {
+                        "key": "rzp_test_JkLhsObiDUT936", // Enter the Key ID generated from the Dashboard
+
+                        "amount": new_amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                        "currency": "INR",
+                        "name": "{{request.user.get_full_name}}",
+                        "description": "{{product.name}}",
+                        "image": "{{product.image.url}}",
+                        "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                        "callback_url": "/success/",
+                        "prefill": {
+                            "name": "{{request.session.customer.fname}}",
+                            "email": "{{request.session.customer.email}}",
+                            "contact": "{{request.session.customer.phone}}"
+                        },
+                        "notes": {
+                            "address": "Razorpay Corporate Office"
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+                    var rzp1 = new Razorpay(options);
+                    document.getElementById('rzp-button1').onclick = function (e) {
+                        rzp1.open();
+                        e.preventDefault();
+                    }
+                </script>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+{% endblock %}

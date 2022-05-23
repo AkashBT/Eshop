@@ -1,0 +1,61 @@
+{% extends 'store/base.html' %}
+
+{% block body %}
+
+{%load cart%}
+{% load custom_filter%}
+<style>
+    body{
+        color:white !important;
+    }
+    table{
+        color: white !important;
+    }
+
+    #example_filter{
+        float:right !important;
+      }
+    .pagination{
+        float:right !important;
+    }
+    </style>
+
+<div class="container">
+    <!-- <h1><u>My Cart</u></h1> -->
+
+
+    <div class="border rounded p-4 m-4" style="overflow-x: auto;">
+        <p class="display-4"><u><b>Your Wishlist</b></u></p>
+        <table id="example" class="table" style="width:100%;">
+            <thead>
+                <th>Sno.</th>
+                <th>Product Name</th>
+                
+                <th>Product Image</th>
+                
+                <th>Product Price</th>
+                
+                <th>Action</th>
+            </thead>
+            <tbody>
+                {% for wishlist in wishlists%}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{wishlist.product.name}}</td>
+                    <td><img src="{{wishlist.product.image.url}}" height="100px" width="100px" alt=""></td>
+                    <td>{{wishlist.product.price}}</td>
+                    <td><a href="{%url 'store:removewishlist' wishlist.id %}" class="btn btn-danger">Remove from wishlist</a></td>
+                </tr>
+                {% endfor%}
+            </tbody>
+            
+        </table>
+
+        
+
+    </div>
+</div>
+  
+  
+
+{% endblock %}

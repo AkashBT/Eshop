@@ -1,0 +1,108 @@
+{%extends 'store/base.html'%}
+{% load static %}
+{% block body%}
+<style>
+div.sticky {
+  position: -webkit-sticky; /* Safari */
+  position: sticky !important;
+  top: 0px !important;
+  z-index: 9999;
+}
+
+</style>
+
+<div class="sticky">
+    <div class="row" style="background-color:brown;">
+        <ul class="list-group " style="flex-direction: row;">
+            <a href="/" class="list-group-item">All Products</a>
+            {%for category in category%}
+            <a href="/?category={{category.id}}" class="list-group-item">{{category.name}}</a>
+            {%endfor%}
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Filter -->
+    <div class="col-md-2 " id="sidebanners">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+    </div>
+    <div class="col-md-8 mt-3">
+        {% block content%}
+
+        {%load cart%}
+        {%load custom_filter%}
+        <div class="container  border rounded ">
+            <div class="row ">
+                <h3 class="text-white">Search Result for : {{search}}</h3>
+                {%if products%}
+                    {% for product in products%}
+
+                
+
+                <div class="col-md-4 ">
+                    
+                    
+                    <div class="card mx-auto mb-3 mt-5" style="width: 18rem;" id="{{product.id}}" >
+                        <img src="{{product.image.url}}" height="250px" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text"><b>{{product.price|currency}}</b></p>
+                            <p>
+                            {% load ratings %}
+
+                            {% ratings product%}
+                            </p>
+                            <a href="{% url 'store:read_all' product.id%}" class="btn btn-success" style="float:right;">Read All</a>
+                        </div>
+                        
+
+
+                    </div>
+
+                </div>
+
+
+                {%endfor%}
+
+                {%else%}
+                <h3 class="text-white text-center">Opps.... No Result Found  !!!</h3>
+
+                {%endif%}
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-2 " id="sidebanners">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+    </div>
+
+    {%endblock%}
+
+</div>
+</div>
+</div>
+
+
+
+
+{% endblock%}

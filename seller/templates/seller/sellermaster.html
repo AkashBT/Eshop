@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>                   
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <title>{%block title%} {%endblock%}</title>
+    
+
+    <style>
+      body {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      .main_div {
+        width: 100%;
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+
+      }
+
+      .main_div h1 {
+        color: white;
+        background: transparent;
+        text-shadow: 0 2px 2px black;
+      }
+
+      label{
+        color:white;
+      }
+
+      .main_div form {
+        
+        padding: 15px ;
+        background-color: #0d6efd;
+        color: white;
+        border: 2px solid #ecf0f1;
+        outline: none;
+        border-radius: 5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        text-align: center;
+        box-shadow: 2px 2px 2px 2px black;
+      }
+
+      audio {
+        width: -webkit-fill-available;
+      }
+
+      .main_div input {
+        background-color: white;
+      }
+
+      .main_div table,
+      td,
+      th,
+      tr {
+        border: none;
+      }
+
+      .errorlist {
+        background-color: #ffc107
+      }
+
+
+      .cards {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        text-align: center;
+
+      }
+
+      .card:hover {
+        box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05, 1.05);
+        border-radius: 25px;
+        background-color: #fff;
+        padding-bottom: 15px;
+
+      }
+
+      .card__img {
+        height: 354px;
+        width: 100%;
+      }
+
+      .button {
+        padding: 5px 8px;
+        cursor: pointer;
+      }
+
+      */ .footerdiv {
+        position: fixed;
+        padding: 10px 10px 0px 10px;
+        bottom: 0;
+      }
+
+
+
+      /* navbar styling */
+      {% comment %} .nav-link{
+      border-radius:50px ;
+      background-color: white;
+      color: black !important;
+      border: none;
+      padding: 5px;
+      box-shadow: 2px 2px 2px ;
+      margin-left: 5px;
+      }
+      .nav-link:hover{
+        color: white !important;
+        color:#fff ;
+      background-color: gray;
+      box-shadow: 2px 2px 2px;
+      }
+{% endcomment %}
+
+      .navbar-dark .navbar-brand {
+        color: black;
+      } 
+
+
+      /*SIgnin FORM STYLING*/
+
+
+
+
+
+      .btn-warning {
+      color: #000;
+      background-color: #ffc107;
+      border-color: black !important;
+  }
+
+  .btn-warning:hover {
+      color: #000;
+      background-color: #ffe481 !important;
+      border-color: black !important;
+  }
+
+  input{
+    border-radius: 60px;
+    border: none;
+      padding: 5px;
+      box-shadow: 2px 2px 2px;
+      padding-left: 10px;
+      width: 265px;
+  }
+
+  select {
+    border: none;
+    padding: 5px;
+    box-shadow: 2px 2px 2px;
+    padding-left: 10px;
+    width: 265px;
+}
+
+
+    .search-btn{
+      border-radius:50px ;
+      border: none;
+      padding: 5px;
+      box-shadow: 2px 2px 2px ;
+    }
+    .search-btn:hover{
+      color:#fff ;
+      background-color: gray;
+      box-shadow: 2px 2px 2px;
+    }
+
+
+
+
+
+      footer {
+        padding: 10px 10px 0px 10px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        background: #ffc107;
+        text-align: center;
+        color: black;
+        font-weight: bold;
+      }
+
+
+
+
+      .corona_rot img {
+      animation: gocorona 3s linear infinite;
+  }
+  @keyframes gocorona{
+    0% {transform: rotate(0deg);}
+  100% {transform: rotate(360deg);}
+  }
+
+  .leftside img{
+    animation: heartbeat 5s linear infinite;
+  }
+
+  @keyframes heartbeat{
+    0%{
+      transform: scale(.80);
+    }
+    20%{
+      transform: scale(1);
+    }
+    40%{
+      transform: scale(.80);
+    }
+    60%{
+      transform: scale(1);
+    }
+    80%{
+      transform: scale(.80);
+      }
+    100%{
+    transform: scale(.80);
+      }
+  }
+
+
+
+
+
+  .dropdown-submenu {
+    position: relative;
+  }
+
+  .dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+  }
+
+
+
+  @media only screen and(max-width: 480px) {
+    input {
+      border-radius: 60px;
+      border: none;
+      padding: 5px;
+      box-shadow: 2px 2px 2px;
+      padding-left: 10px;
+      width: 175px !important;
+  }
+  .main_div form {
+      padding: 15px 0px;
+      background-color: #ffc107;
+      color: white;
+      border: 2px solid #ecf0f1;
+      outline: none;
+      border-radius: 5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 2px 2px 2px 2px black;
+  }
+  }
+
+
+    </style>
+
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{%url 'customer:main'%}"><b>Apni Dukan</b></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button> 
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'ecom:home' %}">Home</a>
+              </li>
+              
+              
+              {% if "user_log" in request.session %}
+
+                {% comment %} <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Add product
+                  </a>
+                  
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for i in cat %}
+                    <li><a class="dropdown-item" href="#">{{i.name}}</a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <!-- {% for i in cat %} -->
+                        <li><a class="dropdown-item" href="#">na</a></li>
+                        <!-- {% endfor %} -->
+                      </ul>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  
+                </li> {% endcomment %}
+
+              <li class="nav-item">
+                <a class="nav-link active" href="#">{{request.session.user_log.company}}</a>
+              </li> 
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'ecom:signout' %}">logout</a>
+              </li> 
+              
+              {%else%}
+              <li class="nav-item">
+                <a class="nav-link active" href="{%url 'ecom:signup'%}">Seller Signup</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{%url 'ecom:signin'%}">Seller Signin</a>
+              </li>
+               {%endif%}
+            </ul>
+           
+          </div>
+        </div>
+      </nav>
+
+      
+      {%block body%}
+      <!-- Carousel -->
+<div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+  <!-- Indicators/dots -->
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+  </div>
+  
+
+  <!-- The slideshow/carousel -->
+  <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://i.ytimg.com/vi/EiAD7CNp4Vo/maxresdefault.jpg" alt="Los Angeles" class="d-block" style="width:100%; height:660px;">
+        <div class="carousel-caption">
+          <h3>Shop Smart</h3>
+          <p>Get Great Dicounts and best offers!!!</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://i.pinimg.com/originals/9a/71/6f/9a716f90fc2e24079b8960168d5ea089.jpg" alt="Chicago" class="d-block" style="width:100%; height:660px;">
+        <div class="carousel-caption">
+          <h3>Men</h3>
+          <p>Formals ||Casulas</p>
+        </div> 
+      </div>
+      <div class="carousel-item">
+        <img src="https://finndit.com/assets/upload_file/company/V_D_Retails.jpg" alt="New York" class="d-block" style="width:100%; height:660px;">
+        <div class="carousel-caption">
+          <h3>Women</h3>
+          <p>Formals || Casulas</p>
+        </div>  
+      </div>
+    </div>
+    
+    <!-- Left and right controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+      
+      {%endblock%}
+</body>
+</html>

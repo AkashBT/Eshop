@@ -1,0 +1,207 @@
+{%extends 'store/base.html'%}
+{% load static %}
+{% block body%}
+<style>
+div.sticky {
+  position: -webkit-sticky; /* Safari */
+  position: sticky !important;
+  top: 0px !important;
+  z-index: 9999;
+}
+.demo-view {
+    width: 100%;
+    text-align: right;
+    position: relative;
+    top: 16px;
+    z-index: 1;
+
+}
+a.demo{
+top: 12px;
+    float: left;
+    color: black;
+   
+}
+a.demo:hover{
+top: 12px;
+    color: brown;
+    
+}
+
+
+</style>
+
+<div class="sticky" >
+    <div class="row" style="background-color:brown;">
+        <ul class="list-group " style="flex-direction: row;">
+            <a href="/" class="list-group-item">All Products</a>
+            {%for category in category%}
+            <a href="{% url 'store:category' category.id%}" class="list-group-item">{{category.name}}</a>
+            {%endfor%}
+        </ul>
+    </div>
+</div>
+<!-- Carousel -->
+<div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+    <!-- Indicators/dots -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+    </div>
+
+
+    <!-- The slideshow/carousel -->
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://finndit.com/assets/upload_file/company/V_D_Retails.jpg" height="500px" width="100%"
+                alt="Los Angeles" class="d-block" ID="carouselImg">
+            <div class="carousel-caption">
+                <h3>Female</h3>
+                <p>Formals ||Casulas</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://i.pinimg.com/originals/9a/71/6f/9a716f90fc2e24079b8960168d5ea089.jpg" height="500px"
+                width="100%" alt="Chicago" class="d-block" ID="carouselImg">
+            <div class="carousel-caption">
+                <h3>Men</h3>
+                <p>Formals ||Casulas</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Left and right controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+<div class="row" >
+    <!-- Filter -->
+    <div class="col-md-2 " id="sidebanners">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+    </div>
+    <div class="col-md-8 mt-3">
+        {% block content%}
+
+        {%load cart%}
+        {%load custom_filter%}
+        <div class="container  border rounded ">
+            <div class="row ">
+                {%for category in category%}
+
+
+                {% for product in products%}
+
+                {%if category == product.category%}
+
+                <div class="col-md-4 ">
+                    {%for wishlist in wishlistcount%}
+                    {%if wishlist.product.name == product.name%}
+                    <div class="demo-view">
+                        <a href="{% url 'store:wishlist' %}" rel="nofollow" class=" btn btn-warning  demo"><i
+                                class="fa-external-link"></i> In Wishlist</a>
+                    </div>
+                    {%else%}
+                    {%endif%}
+                    {%endfor%}
+                    <div class="card mx-auto mb-3 mt-5" style="width: 18rem;" id="{{product.id}}" >
+                        <img src="{{product.image.url}}" height="250px" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text"><b>{{product.price|currency}}</b></p>
+                            <p>
+                            {% load ratings %}
+
+                            {% ratings product%}
+                            </p>
+                            <a href="{% url 'store:read_all' product.id%}" class="btn btn-success" style="float:right;">Read All</a>
+                        </div>
+                        <div class="card-footer no-gutter">
+                            {%if product|is_in_cart:request.session.cart %}
+
+                            <div class=" row  d-flex ">
+
+
+                                <form action="/#{{product.id}}" method="post" class="col-2">
+                                    {%csrf_token%}
+                                    <input type="hidden" value="{{product.id}}" name="product">
+                                    <input hidden type="text" value='True' name="remove">
+                                    <input type="submit" value=" - " class=" btn btn-block btn-secondary mx-auto" />
+                                </form>
+                                <div class="text-center col"> {{product|cart_quantity:request.session.cart}} in Cart
+                                </div>
+                                <form action="/#{{product.id}}" method="post" class="col-2">
+                                    {%csrf_token%}
+                                    <input type="hidden" value="{{product.id}}" name="product">
+                                    <input type="submit" value=" + " class=" btn btn-block btn-secondary mx-auto" />
+                                </form>
+                            </div>
+                            {%else%}
+                            <div class="row">
+                                <form action="/#{{product.id}}" method="POST">
+                                    {%csrf_token%}
+                                    <input type="hidden" value="{{product.id}}" name="product">
+                                    <input type="submit" class="btn btn-border btn-block btn-secondary"
+                                        style="width: -webkit-fill-available;float:right;" value="Addd To Cart">
+                                </form>
+                            </div>
+                            {%endif%}
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+               
+{%endif%}
+                {%endfor%}
+
+                {%endfor%}
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-2 " id="sidebanners">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+    </div>
+
+    {%endblock%}
+
+</div>
+</div>
+</div>
+<!-- <script>
+    alert('{{ message }}');
+</script> -->
+
+
+
+
+{% endblock%}

@@ -1,0 +1,227 @@
+{%extends 'store/base.html'%}
+{% load static %}
+{% block body%}
+<style>
+div.sticky {
+  position: -webkit-sticky; /* Safari */
+  position: sticky !important;
+  top: 0px !important;
+  z-index: 9999;
+}
+
+</style>
+
+<div class="sticky">
+    <div class="row" style="background-color:brown;">
+        <ul class="list-group " style="flex-direction: row;">
+            <a href="/" class="list-group-item">All Products</a>
+            {%for category in category%}
+            <a href="/?category={{category.id}}" class="list-group-item">{{category.name}}</a>
+            {%endfor%}
+        </ul>
+    </div>
+</div>
+
+
+<div class="row">
+    <!-- Filter -->
+    <div class="col-md-2 " id="sidebanners">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+    </div>
+    <div class="col-md-8 mt-3">
+        {% block content%}
+        <h1 class="text-white"><u>Public Reviews.............</u></h1>
+        {%load cart%}
+        {%load custom_filter%}
+        <div class="container  border rounded bg-white">
+            <div class="row  mt-5">
+
+
+                <div class="col-md-6 ">
+                            <div class="card mb-3" style="width: 18rem;" id="{{product.id}}" >
+                                <img src="{{product.image.url}}" height="330px"  class="card-img-top" alt="...">
+                            </div>
+                      
+                </div>
+
+                <div class="col-md-6 border-none">
+                    <div class="card mx-auto mb-3"  id="{{product.id}}" >
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text"><b>{{product.price|currency}}</b></p>
+                            <p>
+                            {% load ratings %}
+
+                            {% ratings product%}
+                            </p>
+                            
+                        </div>
+                        <div class="card-footer no-gutter">
+                            {%if product|is_in_cart:request.session.cart %}
+
+                            <div class=" row  d-flex ">
+
+
+                                <form action="/#{{product.id}}" method="post" class="col-2">
+                                    {%csrf_token%}
+                                    <input type="hidden" value="{{product.id}}" name="product">
+                                    <input hidden type="text" value='True' name="remove">
+                                    <input type="submit" value=" - " class=" btn btn-block btn-secondary mx-auto" />
+                                </form>
+                                <div class="text-center col"> {{product|cart_quantity:request.session.cart}} in Cart
+                                </div>
+                                <form action="/#{{product.id}}" method="post" class="col-2">
+                                    {%csrf_token%}
+                                    <input type="hidden" value="{{product.id}}" name="product">
+                                    <input type="submit" value=" + " class=" btn btn-block btn-secondary mx-auto" />
+                                </form>
+                            </div>
+                            {%else%}
+                            <div class="row">
+                                <form action="/#{{product.id}}" method="POST">
+                                    {%csrf_token%}
+                                    <input type="hidden" value="{{product.id}}" name="product">
+                                    <input type="submit" class="btn btn-border btn-block btn-secondary"
+                                        style="width: -webkit-fill-available;float:right;" value="Addd To Cart">
+                                </form>
+                            </div>
+                            {%endif%}
+                        </div>
+                        {%if request.session.customer.id%}
+                        <a href="{%url 'store:add_wishlist' product.id %}" class="btn btn-success">Add to wishlist</a>
+                        {%else%}
+                        {%endif%}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+{%if request.session.customer.id%}
+            <div class="row my-3 border rounded p-2">
+                <form method="POST">
+                    {%csrf_token%}
+        
+                    {% if error%}
+        
+                    <div class="alert alert-danger">
+                        {{error}}
+                    </div>
+        
+                    {%endif%}
+                    <div class="form-group">
+                        <input type="hidden" name="productid" value="{{product.id}}">
+                        <input type="hidden" name="productname" value="{{product.name}}">
+                        <input type="hidden" name="userid" value="{{request.session.customer.fname}}">
+                        <label for="comment">Add Review : </label>
+                        <textarea type="text" name="review" id="comment" placeholder="Enter Review" class="form-control" required cols="30" rows="5"></textarea>
+                    </div>
+                    
+                    <div class="form-group mt-2">
+                        <input type="submit" class="btn btn-info btn-sm" value="Save Review">
+                    </div>
+                </form>
+            </div>
+            {%for review in reviews%}
+                
+            {% if review.user == request.session.customer.fname%}
+
+            <div class="row border rounded p-2 mb-2 bg-info">
+                <div>
+                    <p><span style="font-weight:bold;">Review :</span> {{review.review}}</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><span style="font-weight:bold;">Customer :</span> {{review.user}}</p>
+                        </div>
+                        <div class="col-md-6 ">
+                            <p style="float:right;"><span style="font-weight:bold;">Date :</span> {{review.created}}</p>
+                        </div>
+                    </div>
+                    
+                </div>
+                </div>
+
+                {%else%}
+                <div class="row border rounded p-2 mb-2 bg-warning">
+                    <div>
+                        <p><span style="font-weight:bold;">Review :</span> {{review.review}}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><span style="font-weight:bold;">Customer :</span> {{review.user}}</p>
+                            </div>
+                            <div class="col-md-6 ">
+                                <p style="float:right;"><span style="font-weight:bold;">Date :</span> {{review.created}}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </div>
+    
+                {%endif%}
+               
+                
+               
+                {%endfor%}
+                
+            {%else%}
+            <h3 class="text-danger">Login to give your review</h3>
+            {%for review in reviews%}
+                
+                <div class="row border rounded p-2 mb-2 bg-warning">
+                    <div>
+                        <p><span style="font-weight:bold;">Review :</span> {{review.review}}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><span style="font-weight:bold;">Customer :</span> {{review.user}}</p>
+                            </div>
+                            <div class="col-md-6 ">
+                                <p style="float:right;"><span style="font-weight:bold;">Date :</span> {{review.created}}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </div>
+               
+                {%endfor%}
+                
+            
+            
+            {%endif%}
+
+        </div>
+
+    </div>
+    <div class="col-md-2 " id="sidebanners">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+        <img src="https://cdn4.vectorstock.com/i/1000x1000/59/28/online-store-concept-banner-vertical-vector-25535928.jpg"
+            style="width: -webkit-fill-available;" alt="leftBanner">
+    </div>
+
+    {%endblock%}
+
+</div>
+</div>
+</div>
+
+
+
+
+{% endblock%}

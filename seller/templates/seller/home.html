@@ -1,0 +1,49 @@
+{% extends 'seller/sellermaster.html'%} 
+{%block title%} Seller homepage{%endblock%}
+{%block body%}
+{%if 'user_log' in request.session%}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container-fluid">
+	  
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		 {% for i in cat.cate%} 
+		  <li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			  {{i.name}}
+			</a>
+			<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+			  {%for j in i.subcategory_set.all%}
+				<li><a class="dropdown-item" href="{% url 'ecom:product' j.id %}" >{{j.name}}</a></li>
+				{%endfor%}
+			</ul>
+		  </li>
+		  {%endfor%}
+		</ul>
+		</div>
+	</div>
+  </nav>
+  <div class="container-fluid">
+	<div class="row mt-3">
+		{% for j in cat.prod%}
+		<div class="col-sm-3">
+			<div class="card" style="width: 18rem;">
+				<img src="{{j.image.url}}" class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">{{j.name}},{{j.brand}}</h5>
+					<h6>{{j.price}},{{j.discount}}%</h6>
+					<p>{{j.desc}}</p>
+					<p>
+						<a href="{%url 'ecom:upproduct' j.id%}" class="btn btn-primary">Update</a>
+						<a href="{%url 'ecom:delproduct' j.id%}" class="btn btn-danger">Delete</a>
+					</p>
+				</div>
+			</div>
+		</div>
+		{%endfor%}
+	</div>
+</div>
+{%else%}
+{%endif%}
+
+{%endblock%}

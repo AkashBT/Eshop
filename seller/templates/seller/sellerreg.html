@@ -1,0 +1,24 @@
+{% extends "seller/sellermaster.html" %}
+
+    {%block title%} SELLER SIGNUP {%endblock%}
+
+    {%block body%}
+    
+    <div class="main_div" style="margin-top:50px;">
+    <form method="POST" enctype="multipart/form-data">
+        <!-- csrf token -->
+        {% csrf_token %}
+
+        <!-- for getting form as paragraf
+        {{form.as_p}} -->
+
+        <table class="table table-bordered">
+            {{form.as_table}}
+        </table>
+
+        <!-- form submit button -->
+        <input type="submit" value='Submit' />
+    </form>
+</div>
+
+    {%endblock%}

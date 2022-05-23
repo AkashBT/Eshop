@@ -1,0 +1,29 @@
+{% extends "seller/sellermaster.html" %}
+
+    {%block title%} SELLER LOGIN {%endblock%}
+
+    {%block body%}
+
+    <div class="main_div">
+    <h1>Login Form</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <!-- csrf token -->
+        {% csrf_token %}
+
+        <!-- for getting form as paragraf
+        {{form.as_p}} -->
+
+        <table class="table table-bordered">
+            {{form.as_table}}
+        </table>
+        {% comment %} <label> Enter Email</label>
+        <input type="email" >
+        <label> Enter Password</label>
+        <input type="password" > {% endcomment %}
+
+
+        <!-- form submit button -->
+        <input type="submit" value='Submit' />
+    </form>
+</div>
+    {%endblock%}

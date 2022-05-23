@@ -1,0 +1,88 @@
+{% extends 'store/base.html' %}
+
+{% block body %}
+
+{%load cart%}
+{% load custom_filter%}
+<style>
+    body {
+        color: white !important;
+    }
+
+    table {
+        color: white !important;
+    }
+
+    #example_filter {
+        float: right !important;
+    }
+
+    .pagination {
+        float: right !important;
+    }
+</style>
+
+<div class="container">
+    <!-- <h1><u>My Cart</u></h1> -->
+
+
+    <div class="border rounded p-4 m-4" style="overflow-x: auto;">
+        <p class="display-4"><u><b>Your Orders</b></u></p>
+        <table id="example" class="table table table-responsive" style="width:100%">
+            <thead>
+                <th>Sno.</th>
+                <th>Name</th>
+                <th>Order Date</th>
+                <th>Product </th>
+
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Order Status</th>
+                <th>Export Invoice</th>
+            </thead>
+            <tbody>
+                {% for product in orders%}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{product.product}}</td>
+                    <td>{{product.date}}</td>
+                    <td><img src="{{product.product.image.url}}" height="100px" width="100px" alt=""></td>
+
+                    <td>{{product.price|currency}}</td>
+                    <td>{{product.quantity}}</td>
+                    <td>{{product.quantity|multiply:product.price|currency}}</td>
+                    <td>
+                        {% if product.status == True%}
+                        <h5><small class="badge bg-success text-black"
+                                style="width: -webkit-fill-available;">Completed</small></h5>
+                        {% else %}
+                        <h5><small class="badge bg-warning text-black"
+                                style="width: -webkit-fill-available;">Pending</small></h5>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if product.status == True%}
+                        <a href="{%url 'store:invoice' product.id%}" class="btn btn-success btn-block">Print Invoice</a>
+                        <a href="{%url 'store:invoice' product.id%}" class="btn btn-success btn-block" download>Download Invoice</a>
+                        {% else %}
+                        <h5><small class="badge bg-warning text-black"
+                            style="width: -webkit-fill-available;">Wait</small></h5>
+                        {% endif %}
+                    </td>
+
+
+                </tr>
+                {% endfor%}
+            </tbody>
+
+        </table>
+
+
+
+    </div>
+</div>
+
+
+
+{% endblock %}

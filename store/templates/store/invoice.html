@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <title>Order Invoice</title>
+</head>
+{%load cart%}
+{% load custom_filter%}
+
+<body class="py-5">
+    <div class="container border px-auto my-auto mx-auto">
+        <h1 class="text-center"><u>Tax Invoice</u></h1>
+
+
+        <div class="row">
+            <table class=" table mx-auto px-auto">
+                <tr>
+                    <th>
+                        <h6>Eshop Retailers</h6>
+                        <p>Noida 201301,</br>UP,INDIA</p>
+                    </th>
+                    <th style="text-align: end;">
+                        <h6>Invoice Number</h6></br>
+                        <p> ESHOP-AKASH-12345</p>
+                    </th>
+                </tr>
+            </table>
+
+        </div>
+
+
+
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <th>Order Date</th>
+                    <th>Invoice Date</th>
+                    <th>Billing To</th>
+                    <th>Shipping To</th>
+                </tr>
+                <tr>
+                    <td>
+                        {{order.date}}
+                    </td>
+                    <td>
+                        {{order.date}}
+                    </td>
+                    <td>
+                        <p>{{customer.fname}}&nbsp;{{customer.lname}}</p>
+                        <p>{{customer.address}}</p>
+                        <p>{{customer.phone}}</p>
+                    </td>
+                    <td>
+                        <p>{{customer.fname}}&nbsp;{{customer.lname}}</p>
+                        <p>{{customer.address}}</p>
+                        <p>{{customer.phone}}</p>
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+
+
+        <h3><u>Product Details</u></h3>
+        <div class="row">
+
+            <table class="table border">
+                <tr>
+                    <th>Sno.</th>
+                    <th>Product Name</th>
+                    <th> Image</th>
+                    <th>Order Status</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>{{order.product}}</td>
+                    <td><img src="{{order.product.image.url}}" height="100px" width="100px" alt=""></td>
+                    <td>
+                        {% if order.status == True%}
+                        Completed
+                        {% else %}
+
+                        {% endif %}
+                    </td>
+                    <td>{{order.quantity}}</td>
+                    <td>{{order.price|currency}}</td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td><b>Total :</b></td>
+                    <td>{{order.quantity|multiply:order.price|currency}}</td>
+                </tr>
+            </table>
+
+        </div>
+
+
+
+        <div class="row">
+            <table>
+                <tr style="float: right;">
+                    <td>
+                        <h3>Gross Total : </h3>
+                    </td>
+                    <td>
+                        <h3>{{order.quantity|multiply:order.price|currency}}</h3>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <td>
+                        <h3><u>Terms and Conditions:-</u></h3>
+                        <p>No refunds can br done once payment is done</p>
+                        <p>Sold Product cant be taken back</p>
+                        <p>Payments only taken by online mode</p>
+                        <p>No delivery on national Holidays</p>
+                    </td>
+                    <td class="text-end">
+                        <h6>Authorized Signature</h6>
+                        <p>This is a computer generated slip not required any signature.</p>
+                        <button class="btn btn-warning mt-5" onclick="window.print()">Print Invoice</button>
+                    </td>
+
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

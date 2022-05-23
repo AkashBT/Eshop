@@ -1,0 +1,48 @@
+{%extends 'store/base.html'%}
+
+
+{%block body%}
+
+<!-- <h1>Create an account</h1> -->
+<div class="container">
+    <div class="col-md-5 p-4 m-4 mx-auto border rounded pt-4">
+        <h3 class="alert alert-light text-center">Create An Account</h3>
+        <form method="POST">
+            {%csrf_token%}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Enter Username" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" placeholder="Enter Email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="*******************" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" name="fname" id="fname" placeholder="First name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" name="lname" id="lname" placeholder="Last name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Contact</label>
+                <input type="text" name="phone" id="phone" placeholder="Contct" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" name="address" id="address" placeholder="Address" class="form-control" required>
+            </div>
+
+            <div class="form-group mt-2">
+                <input type="submit" class="btn btn-info btn-sm" value="Create An Account">
+            </div>
+        </form>
+    </div>
+</div>
+
+{%endblock%}
